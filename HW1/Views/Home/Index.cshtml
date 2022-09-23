@@ -1,0 +1,71 @@
+﻿@using HW1.Entities
+@using System.Diagnostics
+@model IEnumerable<List<HW1.Entities.Meal>>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+
+@foreach (var meallist in Model)
+{
+	var type = meallist[0].GetType().Name;
+
+
+	<h1>@type</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(item => meallist[0].Id)
+				</th>
+				<th>
+					@Html.DisplayNameFor(item => meallist[0].Name)
+				</th>
+				<th>
+					@Html.DisplayNameFor(item => meallist[0].Price)
+				</th>
+				<th>
+					@{
+						if (type == "Drink")
+						{
+							@Html.DisplayNameFor(item => (meallist[0] as Drink).Volume)
+						}
+						else if (type == "FastFood")
+						{
+							@Html.DisplayNameFor(item => (meallist[0] as FastFood).Volume)
+						}
+					}
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in meallist)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.Id)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Name)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Price)
+					</td>
+					@{
+						if (type != "HotMeal")
+						{
+							string volume = type == "Drink" ?
+							((item as Drink).Volume) : ((item as FastFood).Volume);
+							<td>
+								@Html.DisplayFor(modelItem => volume)
+							</td>
+						}
+					}
+				</tr>
+			}
+		</tbody>
+	</table>
+	<br />
+	<br />
+}
